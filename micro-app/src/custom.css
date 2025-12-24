@@ -1,0 +1,32 @@
+/* 子应用自定义样式 */
+
+/* 这个样式在 qiankun 的 experimentalStyleIsolation 模式下
+   会被加上前缀选择器，变成类似：
+   div[data-qiankun="micro-app"] .custom-modal-text { ... }
+
+   当 Modal 挂载到 body 时，由于不在 div[data-qiankun] 容器内，
+   这个样式就不会生效
+*/
+
+.custom-modal-text {
+  color: #ff4d4f;
+  font-size: 18px;
+  font-weight: bold;
+  background: linear-gradient(90deg, #fff7e6, #ffe7ba);
+  padding: 12px;
+  border-radius: 8px;
+  border-left: 4px solid #fa8c16;
+}
+
+.custom-highlight {
+  color: #1890ff;
+  text-decoration: underline;
+  font-style: italic;
+}
+
+.custom-box {
+  border: 2px dashed #52c41a;
+  padding: 16px;
+  margin: 12px 0;
+  background-color: #f6ffed;
+}

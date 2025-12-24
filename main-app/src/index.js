@@ -15,7 +15,7 @@ const actions = initGlobalState(initialState);
 // 监听全局状态变化
 actions.onGlobalStateChange((state, prev) => {
   console.log('[主应用] 全局状态变化:', state, prev);
-});
+}, true); // true: 立即执行一次，验证监听器是否注册成功
 
 // 导出 actions 供其他组件使用
 window.qiankunActions = actions;
@@ -27,9 +27,7 @@ registerMicroApps([
     entry: '//localhost:3001',
     container: '#micro-container',
     activeRule: '/micro',
-    props: {
-      actions, // 传递通信实例给子应用
-    },
+    // 不传递 props.actions，qiankun 会自动注入 setGlobalState 和 onGlobalStateChange
   },
 ]);
 

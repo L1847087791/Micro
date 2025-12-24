@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Layout, Menu, Card, Input, Button, Space, message } from 'antd';
-import { BrowserRouter, Route, Switch, Link } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Link, useLocation } from 'react-router-dom';
 import {
   HomeOutlined,
   AppstoreOutlined,
@@ -54,41 +54,51 @@ const Home = () => {
   );
 };
 
+// 内部布局组件，使用 useLocation 获取当前路径
+const AppLayout = () => {
+  const location = useLocation();
+  const selectedKey = location.pathname.startsWith('/micro') ? 'micro' : 'home';
+
+  return (
+    <Layout style={{ minHeight: '100vh' }}>
+      <Header style={{ display: 'flex', alignItems: 'center' }}>
+        <div style={{ color: '#fff', fontSize: 18, fontWeight: 'bold' }}>
+          微前端演示系统
+        </div>
+      </Header>
+      <Layout>
+        <Sider width={200} style={{ background: '#fff' }}>
+          <Menu
+            mode="inline"
+            selectedKeys={[selectedKey]}
+            style={{ height: '100%', borderRight: 0 }}
+          >
+            <Menu.Item key="home" icon={<HomeOutlined />}>
+              <Link to="/">主应用首页</Link>
+            </Menu.Item>
+            <Menu.Item key="micro" icon={<AppstoreOutlined />}>
+              <Link to="/micro">子应用</Link>
+            </Menu.Item>
+          </Menu>
+        </Sider>
+        <Content style={{ padding: 24, margin: 0, minHeight: 280, background: '#fff' }}>
+          <Switch>
+            <Route exact path="/" component={Home} />
+            {/* 子应用挂载容器 */}
+            <Route path="/micro">
+              <div id="micro-container"></div>
+            </Route>
+          </Switch>
+        </Content>
+      </Layout>
+    </Layout>
+  );
+};
+
 const App = () => {
   return (
     <BrowserRouter>
-      <Layout style={{ minHeight: '100vh' }}>
-        <Header style={{ display: 'flex', alignItems: 'center' }}>
-          <div style={{ color: '#fff', fontSize: 18, fontWeight: 'bold' }}>
-            微前端演示系统
-          </div>
-        </Header>
-        <Layout>
-          <Sider width={200} style={{ background: '#fff' }}>
-            <Menu
-              mode="inline"
-              defaultSelectedKeys={['home']}
-              style={{ height: '100%', borderRight: 0 }}
-            >
-              <Menu.Item key="home" icon={<HomeOutlined />}>
-                <Link to="/">主应用首页</Link>
-              </Menu.Item>
-              <Menu.Item key="micro" icon={<AppstoreOutlined />}>
-                <Link to="/micro">子应用</Link>
-              </Menu.Item>
-            </Menu>
-          </Sider>
-          <Content style={{ padding: 24, margin: 0, minHeight: 280, background: '#fff' }}>
-            <Switch>
-              <Route exact path="/" component={Home} />
-              {/* 子应用挂载容器 */}
-              <Route path="/micro">
-                <div id="micro-container"></div>
-              </Route>
-            </Switch>
-          </Content>
-        </Layout>
-      </Layout>
+      <AppLayout />
     </BrowserRouter>
   );
 };

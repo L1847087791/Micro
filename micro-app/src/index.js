@@ -28,11 +28,11 @@ export async function bootstrap() {
 // qiankun 生命周期钩子 - mount
 export async function mount(props) {
   console.log('[micro-app] mount', props);
-  // 监听全局状态变化
-  if (props.actions) {
-    props.actions.onGlobalStateChange((state, prev) => {
+  // 使用 qiankun 自动注入的 onGlobalStateChange（不是 props.actions）
+  if (props.onGlobalStateChange) {
+    props.onGlobalStateChange((state, prev) => {
       console.log('[子应用] 全局状态变化:', state, prev);
-    }, true); // true 表示立即执行一次
+    }, true);
   }
   render(props);
 }
